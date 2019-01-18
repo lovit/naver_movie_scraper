@@ -2,6 +2,11 @@ import sys
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
+import re
+
+
+normalize_pattern = re.compile('[\r\n\t]')
+doublespcae_pattern = re.compile('[\s]+')
 
 
 def get_soup(url):
@@ -30,3 +35,8 @@ def get_soup(url):
         }
         pprint(traceback_details)
         return ''
+
+def text_normalize(s):
+    s = normalize_pattern.sub(' ', s)
+    s = doublespcae_pattern.sub(' ', s)
+    return s.strip()

@@ -1,0 +1,72 @@
+import re
+from .utils import get_soup
+from .utils import text_normalize
+
+
+basic_url_form = 'http://movie.naver.com/movie/bi/mi/basic.nhn?code={}' # idx
+
+def scrap_basic(idx):
+    url = basic_url_form.format(idx)
+    soup = get_soup(url)
+    infomation = {
+        'movie_idx': idx,
+        'expert_score': meta_score(soup)[0],
+        'netizen_score': meta_score(soup)[1],
+        'title': title(soup),
+        'e_title': e_title(soup),
+        'genres': genres(soup),
+        'countries': countries(soup),
+        'running_time': running_time(soup),
+        'open_date': open_date(soup),
+        'grade': grade(soup)
+    }
+    return infomation
+
+def meta_score(soup):
+    try:
+        main_score = soup.select('div[class=main_score]')[0]
+        expert_score = main_score.select('div[class=spc_score_area] div[class=star_score]')[0].text.replace('\n','')
+        netizen_score = main_score.select('div[class=star_score] span[class=st_off]')[0].text.replace('관람객 평점 ', '').replace('점', '')
+        return float(expert_score), float(netizen_score)
+    except:
+        return -1, -1
+
+def title(soup):
+    a = soup.select('div[class=mv_info] h3[class=h_movie] a')
+    if not a:
+        return ''
+    return text_normalize(a[0].text)
+
+def e_title(soup):
+    strong = soup.select('div[class=mv_info] strong[class=h_movie2]')
+    if not strong:
+        return ''
+    return text_normalize(strong[0].text)
+
+def genres(soup):
+    genres = soup.select('a[href^=/movie/sdb/browsing/bmovie.nhn?genre=]')
+    return list({genre.text for genre in genres})
+    
+def countries(soup):
+    countries = soup.select('a[href^=/movie/sdb/browsing/bmovie.nhn?nation=]')
+    return list({country.text for country in countries})
+
+def running_time(soup):
+    dl = soup.select('dl[class=info_spec]')
+    try:
+        return re.search(r"\d+분", dl[0].text).group()[:-1]
+    except:
+        return 0
+
+def open_date(soup):
+    links = soup.select('dl[class=info_spec] a')
+    dates = [a.attrs['href'].split('bmovie.nhn?open=')[-1]
+        for a in links if 'bmovie.nhn?open=' in a.attrs.get('href', '')]
+    dates = ['{}-{}-{}'.format(d[:4], d[4:6], d[6:]) for d in dates if len(d) == 8]
+    return dates
+    
+def grade(soup):
+    a = soup.select('a[href^=/movie/sdb/browsing/bmovie.nhn?grade]')
+    if not a:
+        return ''
+    return text_normalize(a[0].text)
