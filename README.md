@@ -40,7 +40,7 @@ Return 값은 dict 형식입니다.
 | open_date | list of str | ['2017-12-08', '2016-12-07'] | 재개봉 날짜가 포함될 수 있음 |
 | running_time | int | 127 | . |
 | story | str | 황홀한 사랑, 순수한 희망, 격렬한 열정... | 줄거리 |
-| making_note | str | ABOUT MOVIE 1.\n“이 영화는 마법이다”\n올 겨울, 당신의 꿈이 이루어지는  ... | 매이킹 노트 |
+| making_note | str | ABOUT MOVIE 1.<br>“이 영화는 마법이다”<br>올 겨울, 당신의 꿈이 이루어지는  ... | 매이킹 노트 |
 | box_office | str | '3,598,929명(01.17 기준)' | 영화진흥위원회에서 제공하는 국내 관객 수 |
 
 ```
