@@ -49,6 +49,7 @@ def text_normalize(s):
     normalized text. Remove \\n, \\r, \\t, double space
     """
 
+    s = s.replace('&nbsp;', ' ')
     s = normalize_pattern.sub(' ', s)
     s = doublespcae_pattern.sub(' ', s)
     return s.strip()
