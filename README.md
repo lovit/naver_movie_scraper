@@ -41,9 +41,11 @@ Return 값은 dict 형식입니다.
 | running_time | int | 127 | . |
 | story | str | 황홀한 사랑, 순수한 희망, 격렬한 열정... | 줄거리 |
 | making_note | str | ABOUT MOVIE 1.\n“이 영화는 마법이다”\n올 겨울, 당신의 꿈이 이루어지는  ... | 매이킹 노트 |
+| box_office | str | '3,598,929명(01.17 기준)' | 영화진흥위원회에서 제공하는 국내 관객 수 |
 
 ```
-{'countries': ['미국'],
+{'box_office': '3,598,929명(01.17 기준)'
+ 'countries': ['미국'],
  'e_title': 'La La Land , 2016',
  'expert_score': 8.34,
  'genres': ['멜로/로맨스', '뮤지컬', '드라마'],

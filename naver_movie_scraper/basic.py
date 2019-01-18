@@ -21,7 +21,8 @@ def scrap_basic(idx):
         'open_date': open_date(soup),
         'grade': grade(soup),
         'story': story(soup),
-        'making_note': making_note(soup)
+        'making_note': making_note(soup),
+        'box_office': box_office(soup)
     }
     return infomation
 
@@ -97,3 +98,9 @@ def making_note(soup):
         return '\n'.join(sents)
     except:
         return ''
+
+def box_office(soup):
+    p = soup.select('p[class=count]')
+    if not p:
+        return -1
+    return text_normalize(p[0].text)
