@@ -64,7 +64,7 @@ Return 값은 dict 형식입니다.
 ```python
 from naver_movie_scraper import scrap_comments
 
-scrap_comments(idx, 3)
+scrap_comments(idx, limit=3)
 ```
 
 개봉 전, 개봉 후 영화 평 데이터를 모두 수집합니다. 수집 상황을 20 페이지 단위로 프린트 합니다.
