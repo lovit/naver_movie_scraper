@@ -21,8 +21,8 @@ def _scrap_comments(idx, limit, after, sleep=0.05):
         url = comments_url_form.format(idx, 'after' if after else 'before', p)
         comments += parse_a_page(get_soup(url))
         if p % 20 == 0:
-            print('\rmovie {}, {}, {} / {} ...'.format(idx, after_strf, p, max_page), end='')
-    print('\rmovie {}, {}, {} / {} done'.format(idx, after_strf, p, max_page))
+            print('\r  movie {}, {}, {} / {} ...'.format(idx, after_strf, p, max_page), end='')
+    print('\r  movie {}, {}, {} / {} done'.format(idx, after_strf, p, max_page))
     return comments
 
 def parse_a_page(soup):

@@ -4,3 +4,6 @@ from .detail import scrap_casting
 from .script import scrap_bestscript
 from .utils import get_soup
 from .utils import text_normalize
+from .utils import save_list_of_dict
+from .utils import load_list_of_dict
+from .utils import save_json

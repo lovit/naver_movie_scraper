@@ -84,3 +84,16 @@ def load_list_of_dict(path):
     with open(path, encoding='utf-8') as f:
         objs = [json.loads(obj.strip()) for obj in f]
     return objs
+
+def save_json(obj, path):
+    """
+    Arguments
+    ---------
+    obj : list of dict
+        Object to store
+    path : str
+        File path
+    """
+
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(obj, f, indent=2, ensure_ascii=False)
