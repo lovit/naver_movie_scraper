@@ -243,7 +243,7 @@ list of dict 형식의 값을 return 합니다.
 | directory | str | './output/' | Output directory |
 | begin_idx | int | 134963 | Index of first movie |
 | end_idx | int | 134963 | Index of last movie |
-| specific_idx | str | '' | Index of specific movies |
+| specific_idx | str | '' | Index of specific movies<br>Under-bar separated idx<br>eg. 134963_10100 |
 | limit | int | 3 | Page limitation for comments & best scripts |
 | sleep | float | 0.1 | Sleep time per each page in comments & best scripts |
 
