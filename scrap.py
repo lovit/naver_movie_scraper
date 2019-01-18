@@ -66,8 +66,24 @@ def main():
     if specific_idx:
         idxs = [int(idx) for idx in specific_idx.split('_')]
 
+    exceptions = []
     for idx in idxs:
-        scrap(idx, directory)
+        try:
+            scrap(idx, directory)
+        except Exception as e:
+            print('movie id = {}'.format(idx))
+            print(e)
+            exceptions.append((idx, str(e)))
+
+    with open('./log', 'w', encoding='utf-8') as f:
+        if not exceptions:
+            f.write('Information of all movies were scraped successfully.\n')
+        else:
+            f.write('Exist exceptions\n\n')
+            for idx, e in exceptions:
+                f.write('movie id = {}'.format(idx))
+                f.write('{}\n'.format(e))
+
 
 if __name__ == '__main__':
     main()
