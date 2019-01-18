@@ -227,3 +227,32 @@ list of dict 형식의 값을 return 합니다.
   ...
  ]
 ```
+
+## Script 를 이용한 데이터 수집
+
+`script.py` 파일을 이용하면 위의 함수들을 모두 이용할 수 있습니다. 사용 가능한 arguments 는 아래와 같습니다.
+
+| Argument | Type | Default | Description |
+| --- | --- | --- | --- |
+| directory | str | './output/' | Output directory |
+| begin_idx | int | 134963 | Index of first movie |
+| end_idx | int | 134963 | Index of last movie |
+| specific_idx | str | '' | Index of specific movies |
+| limit | int | 3 | Page limitation for comments & best scripts |
+| sleep | float | 0.1 | Sleep time per each page in comments & best scripts |
+
+```
+python script.py --directory ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --limit 3 --sleep 0.1
+```
+
+위 코드를 실행시키면 현재 폴더 아래 `output` 가 생성되며, 각각의 하위 폴더에 해당 정보들이 수집됩니다.
+
+```
+|-- output
+    |-- actors
+    |-- bestscripts
+    |-- comments
+    |-- directors
+    |-- meta
+    |-- staffs
+```
