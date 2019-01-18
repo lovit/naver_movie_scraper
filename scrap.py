@@ -10,7 +10,7 @@ from naver_movie_scraper import save_list_of_dict
 from naver_movie_scraper import save_json
 
 
-def scrap(idx, directory, casting=True, bestscript=True, comments=True, limit=3, sleep=0.05):
+def scrap(idx, directory, casting=True, bestscripts=True, comments=True, limit=3, sleep=0.05):
     # basic
     save_json(scrap_basic(idx), '{}/meta/{}.json'.format(directory, idx))
     print('scraped {} basic'.format(idx))
@@ -24,7 +24,7 @@ def scrap(idx, directory, casting=True, bestscript=True, comments=True, limit=3,
         print('scraped {} casting'.format(idx))
 
     # best scripts
-    if bestscript:
+    if bestscripts:
         scripts = scrap_bestscript(idx, limit, sleep)
         if scripts:
             save_list_of_dict(scripts, '{}/bestscripts/{}'.format(directory, idx))
@@ -48,6 +48,9 @@ def main():
     parser.add_argument('--specific_idx', type=str, default='', help='Index of specific movies')
     parser.add_argument('--limit', type=int, default=3, help='Page limitation for comments & best scripts')
     parser.add_argument('--sleep', type=float, default=0.1, help='Sleep time per each page in comments & best scripts')
+    parser.add_argument('--casting', dest='casting', action='store_true')
+    parser.add_argument('--bestscripts', dest='bestscripts', action='store_true')
+    parser.add_argument('--comments', dest='comments', action='store_true')
 
     args = parser.parse_args()
     directory = args.directory
@@ -56,6 +59,9 @@ def main():
     specific_idx = args.specific_idx
     limit = args.limit
     sleep = args.sleep
+    casting = args.casting
+    bestscripts = args.bestscripts
+    comments = args.comments
 
     for subdir in ['meta', 'actors', 'directors', 'staffs', 'bestscripts', 'comments']:
         path = '{}/{}/'.format(directory, subdir)
@@ -69,7 +75,7 @@ def main():
     exceptions = []
     for idx in idxs:
         try:
-            scrap(idx, directory)
+            scrap(idx, directory, casting, bestscripts, comments, limit, sleep)
         except Exception as e:
             print('movie id = {}'.format(idx))
             print(e)

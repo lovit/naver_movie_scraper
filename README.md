@@ -7,7 +7,7 @@
 | basic.py | 메인 화면에서 영화 이름, 장르 등의 정보를 수집 | scrap_basic |
 | comments.py | 사용자 작성 댓글과 평점을 수집 | scrap_comments |
 | detail.py | 감독, 배우, 스탭 정보를 수집 | scrap_casting |
-| script.py | 명대사를 수집 | scrap_bestscript |
+| script.py | 명대사를 수집 | scrap_bestscripts |
 | utils.py | utils | get_soup<br>text_normalize<br>save_list_of_dict<br>load_list_of_dict |
 
 영화 `라라랜드` 의 정보를 수집하는 예시로 사용법을 설명합니다. 라라랜드의 영화 아이디는 `134963` 입니다.
@@ -194,7 +194,7 @@ scrap_casting(idx)['staffs']
 ]
 ```
 
-## scrap_bestscript
+## scrap_bestscripts
 
 | Argument | Type | Note |
 | --- | --- | --- |
@@ -203,9 +203,9 @@ scrap_casting(idx)['staffs']
 | sleep | float | 과도한 데이터 수집은 서버에 부하를 줍니다.<br>sleep 은 수집하는 페이지마다 쉬는 간격입니다.<br>**sleep 을 작게 설정할 경우, 서버로부터 접근이 차단될 수 있습니다.**<br>여유가 되는대로 큰 값 (0.5 이상)으로 설정하십시요.|
 
 ```python
-from naver_movie_scraper import scrap_bestscript
+from naver_movie_scraper import scrap_bestscripts
 
-scrap_bestscript(idx, limit=3)
+scrap_bestscripts(idx, limit=3)
 ```
 
 list of dict 형식의 값을 return 합니다.
@@ -246,9 +246,12 @@ list of dict 형식의 값을 return 합니다.
 | specific_idx | str | '' | Index of specific movies<br>Under-bar separated idx<br>eg. 134963_10100 |
 | limit | int | 3 | Page limitation for comments & best scripts |
 | sleep | float | 0.1 | Sleep time per each page in comments & best scripts |
+| casting | store_true | False | If use, scrap castings |
+| comments | store_true | False | If use, scrap comments |
+| bestscripts | store_true | False | If use, scrap best scripts |
 
 ```
-python script.py --directory ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --limit 3 --sleep 0.1
+python script.py --directory ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --limit 3 --sleep 0.1 --casting --comments --bestscripts
 ```
 
 위 코드를 실행시키면 현재 폴더 아래 `output` 가 생성되며, 각각의 하위 폴더에 해당 정보들이 수집됩니다.
