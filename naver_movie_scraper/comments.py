@@ -13,10 +13,13 @@ def scrap_comments(idx, limit=-1, sleep=0.05):
 
 def _scrap_comments(idx, limit, after, sleep=0.05):
     after_strf = 'after' if after else 'before'
-    comments = []
     max_page = num_of_comment_pages(idx, after)
     if limit > 0:
         max_page = min(limit, max_page)
+    if max_page <= 0:
+        return []
+
+    comments = []
     for p in range(1, max_page + 1):
         url = comments_url_form.format(idx, 'after' if after else 'before', p)
         comments += parse_a_page(get_soup(url))
