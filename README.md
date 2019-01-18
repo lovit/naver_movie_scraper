@@ -8,7 +8,7 @@
 | comments.py | 사용자 작성 댓글과 평점을 수집 | scrap_comments |
 | detail.py | 감독, 배우, 스탭 정보를 수집 | scrap_casting |
 | script.py | 명대사를 수집 | scrap_bestscript |
-| utils.py | utils | get_soup, text_normalize |
+| utils.py | utils | get_soup<br>text_normalize<br>save_list_of_dict<br>load_list_of_dict |
 
 영화 `라라랜드` 의 정보를 수집하는 예시로 사용법을 설명합니다. 라라랜드의 영화 아이디는 `134963` 입니다.
 
