@@ -6,7 +6,7 @@ from .utils import text_normalize
 
 script_url_form = 'http://movie.naver.com/movie/bi/mi/script.nhn?code={}&page={}' # idx, page
 
-def scrap_bestscript(idx, limit=-1, sleep=0.05):
+def scrap_bestscripts(idx, limit=-1, sleep=0.05):
     scripts = []
     max_page = num_of_bestscript_pages(idx)
     for p in range(1, max_page + 1):
