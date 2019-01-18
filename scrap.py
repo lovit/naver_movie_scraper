@@ -74,6 +74,8 @@ def main():
             print('movie id = {}'.format(idx))
             print(e)
             exceptions.append((idx, str(e)))
+        if exceptions:
+            print('Exist {} exceptions'.format(len(exceptions)))
 
     with open('./log', 'w', encoding='utf-8') as f:
         if not exceptions:
