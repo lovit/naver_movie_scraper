@@ -39,6 +39,8 @@ Return 값은 dict 형식입니다.
 | netizen_score | float | 8.9 | 네티즌이 작성한 장문의 리뷰 평균 평점 |
 | open_date | list of str | ['2017-12-08', '2016-12-07'] | 재개봉 날짜가 포함될 수 있음 |
 | running_time | int | 127 | . |
+| story | str | 황홀한 사랑, 순수한 희망, 격렬한 열정... | 줄거리 |
+| making_note | str | ABOUT MOVIE 1.\n“이 영화는 마법이다”\n올 겨울, 당신의 꿈이 이루어지는  ... | 매이킹 노트 |
 
 ```
 {'countries': ['미국'],
@@ -46,10 +48,12 @@ Return 값은 dict 형식입니다.
  'expert_score': 8.34,
  'genres': ['멜로/로맨스', '뮤지컬', '드라마'],
  'grade': '12세 관람가',
+ 'making_note': 'ABOUT MOVIE 1.\n“이 영화는 마법이다”\n올 겨울, 당...',
  'movie_idx': 134963,
  'netizen_score': 8.9,
  'open_date': ['2017-12-08', '2016-12-07'],
  'running_time': 127,
+ 'story': '황홀한 사랑, 순수한 희망, 격렬한 열정…\n이 곳에서 모든...',
  'title': '라라랜드'}
 ```
 
