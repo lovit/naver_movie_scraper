@@ -54,7 +54,7 @@ def countries(soup):
 def running_time(soup):
     dl = soup.select('dl[class=info_spec]')
     try:
-        return re.search(r"\d+분", dl[0].text).group()[:-1]
+        return int(re.search(r"\d+분", dl[0].text).group()[:-1])
     except:
         return 0
 

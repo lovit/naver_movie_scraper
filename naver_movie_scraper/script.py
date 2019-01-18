@@ -6,7 +6,7 @@ from .utils import text_normalize
 
 script_url_form = 'http://movie.naver.com/movie/bi/mi/script.nhn?code={}&page={}' # idx, page
 
-def scrap_bestscript(idx, sleep=0.05, limit=-1):
+def scrap_bestscript(idx, limit=-1, sleep=0.05):
     scripts = []
     max_page = num_of_bestscript_pages(idx)
     for p in range(1, max_page + 1):
@@ -25,7 +25,7 @@ def scrap_from_a_page(soup):
             text = text_normalize(script.select('p[class=one_line]')[0].text)
             character = text_normalize(script.select('p[class=char_part]')[0].text)
             description = text_normalize(script.select('p[class=line_desc]')[0].text)
-            agree = script.select('span[class=w_recomm] em')[-1].text
+            agree = int(script.select('span[class=w_recomm] em')[-1].text)
             scripts.append(
                 {'text': text,
                  'chracter': character,

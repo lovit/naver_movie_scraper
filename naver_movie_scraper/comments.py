@@ -6,9 +6,9 @@ from .utils import get_soup
 
 comments_url_form = 'http://movie.naver.com/movie/bi/mi/pointWriteFormList.nhn?code={}&type={}&onlyActualPointYn=N&order=newest&page={}' # idx, type, page
 
-def scrap_comments(idx, page_limit=-1, sleep=0.05):
-    comments = _scrap_comments(idx, page_limit, after=True, sleep=sleep)
-    comments += _scrap_comments(idx, page_limit, after=False, sleep=sleep)
+def scrap_comments(idx, limit=-1, sleep=0.05):
+    comments = _scrap_comments(idx, limit, after=True, sleep=sleep)
+    comments += _scrap_comments(idx, limit, after=False, sleep=sleep)
     return comments
 
 def _scrap_comments(idx, limit, after, sleep=0.05):

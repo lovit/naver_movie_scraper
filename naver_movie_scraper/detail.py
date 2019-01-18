@@ -24,7 +24,7 @@ def parse_director(director):
     try:
         director_id = director.select('a')
         if director_id:
-            director_id = director_id[0].attrs.get('href','=').split('=')[1]
+            director_id = int(director_id[0].attrs.get('href','=').split('=')[1])
         k_name = director.select('a[class=k_name]')
         k_name = k_name[0].text.strip() if k_name else ''
         e_name = director.select('em[class=e_name]')
@@ -37,7 +37,7 @@ def parse_actor(actor, i):
     try:
         actor_id = actor.select('a')
         if actor_id:
-            actor_id = actor_id[0].attrs.get('href','=').split('=')[1]
+            actor_id = int(actor_id[0].attrs.get('href','=').split('=')[1])
         k_name = actor.select('a[class=k_name]')
         k_name = k_name[0].text.strip() if k_name else ''
         e_name = actor.select('em[class=e_name]')
@@ -52,7 +52,7 @@ def parse_actor(actor, i):
 
 def parse_staff(staff):
     try:
-        idx = staff.select('a')[0].attrs.get('href', '=').split('=')[1]
+        idx = int(staff.select('a')[0].attrs.get('href', '=').split('=')[1])
         k_name = staff.select('a')[0].text
         e_name = ''
         role = ''
