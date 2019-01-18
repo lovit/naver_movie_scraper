@@ -50,6 +50,7 @@ def text_normalize(s):
     """
 
     s = s.replace('&nbsp;', ' ')
+    s = s.replace('\xa0', ' ')
     s = normalize_pattern.sub(' ', s)
     s = doublespcae_pattern.sub(' ', s)
     return s.strip()

@@ -1,4 +1,5 @@
 import re
+from bs4 import BeautifulSoup
 from .utils import get_soup
 from .utils import text_normalize
 
@@ -18,7 +19,9 @@ def scrap_basic(idx):
         'countries': countries(soup),
         'running_time': running_time(soup),
         'open_date': open_date(soup),
-        'grade': grade(soup)
+        'grade': grade(soup),
+        'story': story(soup),
+        'making_note': making_note(soup)
     }
     return infomation
 
@@ -70,3 +73,25 @@ def grade(soup):
     if not a:
         return ''
     return text_normalize(a[0].text)
+
+def story(soup):
+    try:
+        story_soup = BeautifulSoup(
+            str(soup.select("div[class=story_area]")[0]).replace('<br>', '\n').replace('\xa0', '\n'),
+            'lxml')
+        sents = story_soup.text.split('\n')
+        return '\n'.join(text_normalize(s) for s in sents if s)
+    except:
+        return ''
+
+def making_note(soup):
+    try:
+        note_soup = BeautifulSoup(
+            str(soup.select('div[class=making_note]')[0]).replace('<br>', '\n').replace('\xa0', '\n'),
+            'lxml')
+        sents = note_soup.text.split('\n')
+        sents = [text_normalize(s) for s in sents if s]
+        sents = [s for s in sents if not s == '펼쳐보기']
+        return '\n'.join(sents)
+    except:
+        return ''
