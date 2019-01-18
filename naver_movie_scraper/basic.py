@@ -80,7 +80,9 @@ def story(soup):
             str(soup.select("div[class=story_area]")[0]).replace('<br>', '\n').replace('\xa0', '\n'),
             'lxml')
         sents = story_soup.text.split('\n')
-        return '\n'.join(text_normalize(s) for s in sents if s)
+        sents = [text_normalize(s) for s in sents if s]
+        sents = [s for s in sents if s != '줄거리']
+        return '\n'.join(sents)
     except:
         return ''
 
