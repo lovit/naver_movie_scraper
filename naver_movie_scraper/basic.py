@@ -48,11 +48,11 @@ def e_title(soup):
     return text_normalize(strong[0].text)
 
 def genres(soup):
-    genres = soup.select('a[href^=/movie/sdb/browsing/bmovie.nhn?genre=]')
+    genres = soup.select('a[href^="/movie/sdb/browsing/bmovie.nhn?genre="]')
     return list({genre.text for genre in genres})
     
 def countries(soup):
-    countries = soup.select('a[href^=/movie/sdb/browsing/bmovie.nhn?nation=]')
+    countries = soup.select('a[href^="/movie/sdb/browsing/bmovie.nhn?nation="]')
     return list({country.text for country in countries})
 
 def running_time(soup):
@@ -70,7 +70,7 @@ def open_date(soup):
     return dates
     
 def grade(soup):
-    a = soup.select('a[href^=/movie/sdb/browsing/bmovie.nhn?grade]')
+    a = soup.select('a[href^="/movie/sdb/browsing/bmovie.nhn?grade"]')
     if not a:
         return ''
     return text_normalize(a[0].text)
