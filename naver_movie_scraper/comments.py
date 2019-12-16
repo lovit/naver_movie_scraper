@@ -6,7 +6,7 @@ from .utils import get_soup
 
 comments_url_form = 'https://movie.naver.com/movie/bi/mi/pointWriteFormList.nhn?code={}&order=newest&page={}&onlySpoilerPointYn=N' # idx, type, page
 
-def scrap_comments(idx, limit=-1, sleep=0.05):
+def scrap_comments(idx, limit=-1, sleep=0.05, last_time=None):
     max_page = num_of_comment_pages(idx)
     if limit > 0:
         max_page = min(limit, max_page)
@@ -16,14 +16,20 @@ def scrap_comments(idx, limit=-1, sleep=0.05):
     comments = []
     for p in range(1, max_page + 1):
         url = comments_url_form.format(idx, p)
-        comments += parse_a_page(get_soup(url))
+        comments_p, stop = parse_a_page(get_soup(url), last_time)
         if p % 20 == 0:
             print(f'\r  movie {idx}, {p} / {max_page} ...', end='')
-    print(f'\r  movie {idx}, {p} / {max_page} done')
+        comments += comments_p
+        if stop:
+            print(f'\r  movie {idx}. stop scrap comments. found existing comments {p} / {max_page}')
+            break
+    if not stop:
+        print(f'\r  movie {idx}, {p} / {max_page} done')
     return comments[::-1]
 
-def parse_a_page(soup):
+def parse_a_page(soup, last_time=None):
     comments = []
+    stop = False
     for row in soup.select('div[class=score_result] li'):
         try:
             score = int(row.select('div[class=star_score] em')[0].text.strip())
@@ -38,6 +44,9 @@ def parse_a_page(soup):
             written_at = re.search(r"\d+\.\d+\.\d+ \d+:\d+", row.text).group()
             agree = int(row.select('strong[class^="sympathy"]')[0].text.strip())
             disagree = int(row.select('strong[class^="notSympathy"]')[0].text.strip())
+            if (last_time is not None) and (written_at <= last_time):
+                stop = True
+                break
             comments.append(
                 {'score': score,
                  'text': text,
@@ -48,7 +57,7 @@ def parse_a_page(soup):
                 })
         except Exception as e:
             continue
-    return comments
+    return comments, stop
 
 def num_of_comment_pages(idx):
     url = comments_url_form.format(idx, 1)

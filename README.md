@@ -244,14 +244,15 @@ list of dict 형식의 값을 return 합니다.
 | begin_idx | int | 134963 | Index of first movie |
 | end_idx | int | 134963 | Index of last movie |
 | specific_idx | str | '' | Index of specific movies<br>Under-bar separated idx<br>eg. 134963_10100 |
-| limit | int | 3 | Page limitation for comments & best scripts |
+| limit | int | -1 | Page limitation for comments & best scripts |
 | sleep | float | 0.1 | Sleep time per each page in comments & best scripts |
 | casting | store_true | False | If use, scrap castings |
 | comments | store_true | False | If use, scrap comments |
 | bestscripts | store_true | False | If use, scrap best scripts |
+| debug | store_true | False | If use, it set limit as '3' |
 
 ```
-python script.py --directory ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --limit 3 --sleep 0.1 --casting --comments --bestscripts
+python script.py --directory ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --sleep 0.1 --casting --comments --bestscripts --debug
 ```
 
 위 코드를 실행시키면 현재 폴더 아래 `output` 가 생성되며, 각각의 하위 폴더에 해당 정보들이 수집됩니다.
