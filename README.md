@@ -133,13 +133,13 @@ scrap_casting(idx)['actors']
 `라라랜드`의 두 주인공 `라이언 고슬링`과 `엠마 스톤`의 정보가 각각 dict 형태로 저장되어 있으며, 이들은 list 로 정렬되어 있습니다.
 
 ```
-[{'cating_order': 1,
+[{'casting_order': 1,
   'e_name': 'Ryan Gosling',
   'id': 5751,
   'k_name': '라이언 고슬링',
   'part': '주연',
   'role': '세바스찬 역'},
- {'cating_order': 2,
+ {'casting_order': 2,
   'e_name': 'Emma Stone',
   'id': 135256,
   'k_name': '엠마 스톤',
