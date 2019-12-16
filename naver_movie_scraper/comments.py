@@ -20,7 +20,7 @@ def scrap_comments(idx, limit=-1, sleep=0.05):
         if p % 20 == 0:
             print(f'\r  movie {idx}, {p} / {max_page} ...', end='')
     print(f'\r  movie {idx}, {p} / {max_page} done')
-    return comments
+    return comments[::-1]
 
 def parse_a_page(soup):
     comments = []
