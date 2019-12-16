@@ -46,7 +46,7 @@ def parse_actor(actor, i):
         part = part[0].text.strip() if part else ''
         role = actor.select('p[class=pe_cmt]')
         role = role[0].text.replace('[\n역]','').strip() if role else ''
-        return {'id': actor_id, 'k_name': k_name, 'e_name': e_name, 'part': part, 'role': role, 'cating_order': i}
+        return {'id': actor_id, 'k_name': k_name, 'e_name': e_name, 'part': part, 'role': role, 'casting_order': i}
     except:
         return {}
 
