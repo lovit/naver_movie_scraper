@@ -56,7 +56,7 @@ def text_normalize(s):
     return s.strip()
 
 
-def save_list_of_dict(obj, path):
+def save_list_of_dict(obj, path, mode='w'):
     """
     Arguments
     ---------
@@ -64,9 +64,11 @@ def save_list_of_dict(obj, path):
         Object to store
     path : str
         File path
+    mode : str
+        File open mode
     """
 
-    with open(path, 'w', encoding='utf-8') as f:
+    with open(path, mode, encoding='utf-8') as f:
         for d in obj:
             f.write('{}\n'.format(json.dumps(d, ensure_ascii=False)))
 
