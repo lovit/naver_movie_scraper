@@ -48,12 +48,16 @@ def scrap(idx, directory, casting=True, bestscripts=True, comments=True, limit=3
     if comments:
         path = f'{directory}/comments/{idx}'
         last_time = None
+        comments_ = []
         if fast_update:
             if os.path.exists(path):
-                last_time = load_list_of_dict(path)[0]['written_at']
-        comments_ = scrap_comments(idx, limit, sleep, last_time)
-        if comments_:
-            save_list_of_dict(comments_, path, mode='a')
+                comments_ = load_list_of_dict(path)
+                last_time = comments_[0]['written_at']
+        comments_new = scrap_comments(idx, limit, sleep, last_time)
+        if comments_new:
+            comments_ += comments_new
+            comments_ = sorted(comments_, key=lambda x:x['written_at'], reverse=True)
+            save_list_of_dict(comments_, path)
         print(f'scraped {len(comments_)} comments of movie {idx}')
 
     print('')
