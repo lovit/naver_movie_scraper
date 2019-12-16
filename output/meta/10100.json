@@ -1,12 +1,12 @@
 {
   "movie_idx": 10100,
   "expert_score": 7.5,
-  "netizen_score": 9.36,
+  "netizen_score": 9.28,
   "title": "탑건",
   "e_title": "Top Gun , 1986",
   "genres": [
-    "액션",
-    "드라마"
+    "드라마",
+    "액션"
   ],
   "countries": [
     "미국"
