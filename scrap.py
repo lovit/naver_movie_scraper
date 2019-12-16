@@ -1,4 +1,5 @@
 import argparse
+import json
 import os
 import time
 
@@ -56,6 +57,8 @@ def scrap(idx, directory, casting=True, bestscripts=True, comments=True, limit=3
         comments_new = scrap_comments(idx, limit, sleep, last_time)
         if comments_new:
             comments_ += comments_new
+            comments_ = {json.dumps(obj, ensure_ascii=False) for obj in comments_}
+            comments_ = [json.loads(obj) for obj in comments_]
             comments_ = sorted(comments_, key=lambda x:x['written_at'], reverse=True)
             save_list_of_dict(comments_, path)
         print(f'scraped {len(comments_)} comments of movie {idx}')
