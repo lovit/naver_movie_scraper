@@ -4,16 +4,10 @@ import time
 from .utils import get_soup
 
 
-comments_url_form = 'http://movie.naver.com/movie/bi/mi/pointWriteFormList.nhn?code={}&type={}&onlyActualPointYn=N&order=newest&page={}' # idx, type, page
+comments_url_form = 'https://movie.naver.com/movie/bi/mi/pointWriteFormList.nhn?code={}&order=newest&page={}&onlySpoilerPointYn=N' # idx, type, page
 
 def scrap_comments(idx, limit=-1, sleep=0.05):
-    comments = _scrap_comments(idx, limit, after=True, sleep=sleep)
-    comments += _scrap_comments(idx, limit, after=False, sleep=sleep)
-    return comments
-
-def _scrap_comments(idx, limit, after, sleep=0.05):
-    after_strf = 'after' if after else 'before'
-    max_page = num_of_comment_pages(idx, after)
+    max_page = num_of_comment_pages(idx)
     if limit > 0:
         max_page = min(limit, max_page)
     if max_page <= 0:
@@ -21,11 +15,11 @@ def _scrap_comments(idx, limit, after, sleep=0.05):
 
     comments = []
     for p in range(1, max_page + 1):
-        url = comments_url_form.format(idx, 'after' if after else 'before', p)
+        url = comments_url_form.format(idx, p)
         comments += parse_a_page(get_soup(url))
         if p % 20 == 0:
-            print('\r  movie {}, {}, {} / {} ...'.format(idx, after_strf, p, max_page), end='')
-    print('\r  movie {}, {}, {} / {} done'.format(idx, after_strf, p, max_page))
+            print(f'\r  movie {idx}, {p} / {max_page} ...', end='')
+    print(f'\r  movie {idx}, {p} / {max_page} done')
     return comments
 
 def parse_a_page(soup):
@@ -34,10 +28,16 @@ def parse_a_page(soup):
         try:
             score = int(row.select('div[class=star_score] em')[0].text.strip())
             text = row.select('div[class=score_reple] p')[0].text.strip()
+            # detach '관람객' icon
+            if text[:4] == '관람객\n':
+                text = text[4:].strip()
+            # detach '스포일러' icon
+            if text[:25] == '스포일러가 포함된 감상평입니다. 감상평 보기\n':
+                text = text[25:].strip()
             user = row.select('a[onclick^=javascript]')[0].attrs.get('onclick', '').split('(')[1].split(',')[0]
             written_at = re.search(r"\d+\.\d+\.\d+ \d+:\d+", row.text).group()
-            agree = int(row.select('span[class^=sympathy]')[0].text.strip())
-            disagree = int(row.select('span[class^=notSympathy]')[0].text)
+            agree = int(row.select('strong[class^="sympathy"]')[0].text.strip())
+            disagree = int(row.select('strong[class^="notSympathy"]')[0].text.strip())
             comments.append(
                 {'score': score,
                  'text': text,
@@ -46,16 +46,16 @@ def parse_a_page(soup):
                  'agree': agree,
                  'disagree': disagree
                 })
-        except:
+        except Exception as e:
             continue
     return comments
 
-def num_of_comment_pages(idx, after=True):
-    url = comments_url_form.format(idx, 'after' if after else 'before', 1)
+def num_of_comment_pages(idx):
+    url = comments_url_form.format(idx, 1)
     soup = get_soup(url)
 
     try:
-        num_comments = int(soup.select('div[class=score_total] em')[1].text.replace(',',''))
+        num_comments = int(soup.select('div[class="score_total"] em')[-1].text.replace(',',''))
         return math.ceil(num_comments / 5)
     except Exception as e:
-        return 0
+        return -1
