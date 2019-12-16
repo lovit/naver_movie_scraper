@@ -41,6 +41,7 @@ def parse_a_page(soup, last_time=None):
             if text[:25] == '스포일러가 포함된 감상평입니다. 감상평 보기\n':
                 text = text[25:].strip()
             idx = row.select('a[onclick^=javascript]')[0].attrs.get('onclick', '').split('(')[1].split(',')[0]
+            masked_user = row.select('div[class=score_reple] em')[0].text.strip()
             written_at = re.search(r"\d+\.\d+\.\d+ \d+:\d+", row.text).group()
             agree = int(row.select('strong[class^="sympathy"]')[0].text.strip())
             disagree = int(row.select('strong[class^="notSympathy"]')[0].text.strip())
@@ -51,6 +52,7 @@ def parse_a_page(soup, last_time=None):
                 {'score': score,
                  'text': text,
                  'idx': idx,
+                 'user': masked_user,
                  'written_at': written_at,
                  'agree': agree,
                  'disagree': disagree
