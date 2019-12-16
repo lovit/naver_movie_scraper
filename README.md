@@ -249,7 +249,8 @@ list of dict 형식의 값을 return 합니다.
 | casting | store_true | False | If use, scrap castings |
 | comments | store_true | False | If use, scrap comments |
 | bestscripts | store_true | False | If use, scrap best scripts |
-| debug | store_true | False | If use, it set limit as '3' |
+| debug | store_true | False | If use, it sets limit as '3' |
+| fast_update | store_true | False | If use, it stops when finding existing comments |
 
 ```
 python script.py --directory ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --sleep 0.1 --casting --comments --bestscripts --debug
