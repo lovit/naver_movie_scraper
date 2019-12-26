@@ -34,6 +34,7 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1):
             comments_, n_exceptions_ = parse_comments(soup)
             comments += comments_
             n_exceptions += n_exceptions_
+            print(f'\rscraping with seed = {seed_idx}, page = {page}/{max_page}', end='')
     return comments, n_exceptions
 
 normalize_pattern = re.compile('[\r\n\t]')
