@@ -10,6 +10,9 @@ build/
 
 # Experiments
 tmp/
+comment_indices
+user_comments/
+data/
 
 # Jupyter notebook
 .ipynb_checkpoints/
