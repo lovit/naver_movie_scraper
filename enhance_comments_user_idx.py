@@ -67,7 +67,7 @@ def main():
     while indices and diff > 0:
         n_rounds += 1
         seed_idx = str(indices.pop())
-        comments, n_exceptions_ = scrap_comments_of_a_user(seed_idx, sleep)
+        comments, n_exceptions_, flag = scrap_comments_of_a_user(seed_idx, sleep)
         n_exceptions += n_exceptions_
 
         dirname = f'{data_dir}/{seed_idx[:-4]}'
@@ -81,7 +81,7 @@ def main():
         indices = [idx for idx in indices if not (idx in removals)]
 
         # save remain indices
-        if n_rounds % index_update_interval == 0:
+        if (n_rounds % index_update_interval == 0) or (not flag):
             save_index_list(indices, index_list)
 
         diff = n_remains - len(indices)

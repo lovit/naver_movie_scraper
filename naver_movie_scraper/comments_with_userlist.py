@@ -14,7 +14,7 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1):
     Usage
     -----
         >>> seed_idx = '123467' # comment seed idx
-        >>> comments, n_exceptions = scrap_comments_of_a_user(seed_idx)
+        >>> comments, n_exceptions, flag = scrap_comments_of_a_user(seed_idx)
     """
     url = url_base.format(seed_idx)
     soup, max_page = get_comment_soup(url)
@@ -40,8 +40,8 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1):
                 n_exceptions += n_exceptions_
                 print(f'\rscraping with seed = {seed_idx}, page = {page}/{max_page}', end='')
             except:
-                return comments, n_exceptions
-    return comments, n_exceptions
+                return comments, n_exceptions, False
+    return comments, n_exceptions, True
 
 normalize_pattern = re.compile('[\r\n\t]')
 doublespace_pattern = re.compile('[\s]+')
