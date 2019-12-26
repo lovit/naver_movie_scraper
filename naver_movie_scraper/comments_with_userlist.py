@@ -26,15 +26,21 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1):
     comments += comments_
     n_exceptions += n_exceptions_
 
+    # available only to 1000 page
+    max_page = min(max_page, 999)
+
     if max_page > 1:
         for page in range(2, max_page+1):
             time.sleep(sleep)
-            url_ = f'{url}&page={page}'
-            soup, max_page = get_comment_soup(url_)
-            comments_, n_exceptions_ = parse_comments(soup)
-            comments += comments_
-            n_exceptions += n_exceptions_
-            print(f'\rscraping with seed = {seed_idx}, page = {page}/{max_page}', end='')
+            try:
+                url_ = f'{url}&page={page}'
+                soup, max_page = get_comment_soup(url_)
+                comments_, n_exceptions_ = parse_comments(soup)
+                comments += comments_
+                n_exceptions += n_exceptions_
+                print(f'\rscraping with seed = {seed_idx}, page = {page}/{max_page}', end='')
+            except:
+                return comments, n_exceptions
     return comments, n_exceptions
 
 normalize_pattern = re.compile('[\r\n\t]')
