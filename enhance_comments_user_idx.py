@@ -88,7 +88,7 @@ def main():
         n_remains = len(indices)
         progress = 100 * (1 - n_remains / n_indices)
         now = str(datetime.now())[:19]
-        print(f'\rscrap comments of a user ({progress:.4}%, -{diff} indices), exceptions={n_exceptions} @ {now}')
+        print(f'\rscrap comments of a user ({progress:.4}%), -{diff} indices, {n_remains} remains, exceptions={n_exceptions} @ {now}')
         time.sleep(sleep)
 
     print('done')
