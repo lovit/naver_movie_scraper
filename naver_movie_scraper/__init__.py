@@ -1,6 +1,7 @@
 from .basic import scrap_basic
 from .comments import scrap_comments
 from .comments_with_userlist import scrap_comments_of_a_user
+from .comments_with_userlist import scan_comment_indices
 from .detail import scrap_casting
 from .script import scrap_bestscripts
 from .utils import get_soup

@@ -93,13 +93,15 @@ def parse_comments(soup):
             n_exceptions += 1
     return comments, n_exceptions
 
-def scan_comment_indices(comments_dir):
+def scan_comment_indices(comments_dir, debug=False):
     """
     Usage
     -----
         >>> indices = scan_comment_indices('./comments/')
     """
     paths = glob(f'{comments_dir}/*')
+    if debug:
+        paths = paths[:10]
     indices = set()
     n_exceptions = 0
     n_paths = len(paths)
