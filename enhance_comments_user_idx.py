@@ -66,7 +66,7 @@ def main():
         comments, n_exceptions_ = scrap_comments_of_a_user(seed_idx, sleep)
         n_exceptions += n_exceptions_
 
-        dirname = f'{data_dir}/{seed_idx[:-5]}'
+        dirname = f'{data_dir}/{seed_idx[:-4]}'
         check_dir(dirname)
         path = f'{dirname}/{seed_idx}'
         save_list_of_dict(comments, path)
