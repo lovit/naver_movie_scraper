@@ -1,4 +1,6 @@
 from bs4 import BeautifulSoup
+from glob import glob
+import json
 import math
 import re
 import requests
@@ -90,3 +92,31 @@ def parse_comments(soup):
         except Exception as e:
             n_exceptions += 1
     return comments, n_exceptions
+
+def scan_comment_indices(comments_dir):
+    """
+    Usage
+    -----
+        >>> indices = scan_comment_indices('./comments/')
+    """
+    paths = glob(f'{comments_dir}/*')
+    indices = set()
+    n_exceptions = 0
+    n_paths = len(paths)
+    for i, path in enumerate(paths):
+        with open(path, encoding='utf-8') as f:
+            for line in f:
+                try:
+                    indices.add(int(json.loads(line.strip())['idx']))
+                except:
+                    n_exceptions += 1
+                    continue
+        if i % 1000 == 0:
+            n_indices = len(indices)
+            percent = 100 * (i+1) / n_paths
+            print(f'\rscanning from {i+1} / {n_paths} ({percent:.4}%): found {n_indices} indices, {n_exceptions} exceptions', end='')
+
+    n_indices = len(indices)
+    suffix = ' ' * 20
+    print(f'\rscanning has been done. found {n_indices} indices, {n_exceptions} exceptions{suffix}')
+    return indices
