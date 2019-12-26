@@ -10,12 +10,15 @@ normalize_pattern = re.compile('[\r\n\t]')
 doublespcae_pattern = re.compile('[\s]+')
 
 
-def get_soup(url):
+def get_soup(url, headers=None, allow_redirects=False):
     """
     Argument
     --------
     url : str
         Web page url
+    headers : dict or None
+        Headers
+    allow_redirects : Boolean
 
     Returns
     -------
@@ -23,7 +26,7 @@ def get_soup(url):
     """
 
     try:
-        r = requests.get(url).text
+        r = requests.get(url, headers=headers, allow_redirects=allow_redirects).text
         return BeautifulSoup(r, 'lxml')
     except Exception as e:
         exc_type, exc_value, exc_traceback = sys.exc_info()
