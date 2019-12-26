@@ -44,6 +44,7 @@ def main():
     sleep = args.sleep
     debug = args.debug
     noscrap = args.noscrap
+    force_make = args.force_make
 
     # load or make index list
     if (not os.path.exists(index_list)) or (force_make):
