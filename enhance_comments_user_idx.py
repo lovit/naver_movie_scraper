@@ -34,7 +34,7 @@ def main():
     parser.add_argument('--index_list', type=str, default='./comment_indices', help='Remained comment indices')
     parser.add_argument('--sleep', type=float, default=0.1, help='Sleep time')
     parser.add_argument('--debug', dest='debug', action='store_true', help='Find indices from 10 movies')
-    parser.add_argument('--noscrap' dest='noscrap', action='store_true', help='No scraip, only make index list')
+    parser.add_argument('--noscrap', dest='noscrap', action='store_true', help='No scraip, only make index list')
 
     args = parser.parse_args()
     directory = args.comment_directory
