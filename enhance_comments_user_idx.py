@@ -64,11 +64,17 @@ def main():
     n_exceptions = 0
     n_rounds = 0
 
+    exists = {}
+
     while indices and diff > 0:
         n_rounds += 1
         seed_idx = str(indices.pop())
-        comments, n_exceptions_, flag = scrap_comments_of_a_user(seed_idx, sleep)
+        comments, n_exceptions_, flag, username, max_page = scrap_comments_of_a_user(seed_idx, sleep, exists)
         n_exceptions += n_exceptions_
+
+        # update scraped user
+        if max_page > 3:
+            exists[username] = max_page
 
         dirname = f'{data_dir}/{seed_idx[:-4]}'
         check_dir(dirname)

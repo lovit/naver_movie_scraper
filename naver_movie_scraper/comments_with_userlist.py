@@ -9,18 +9,22 @@ import time
 
 url_base = 'https://movie.naver.com/movie/point/af/list.nhn?st=nickname&target=after&sword={}'
 
-def scrap_comments_of_a_user(seed_idx, sleep=0.1):
+def scrap_comments_of_a_user(seed_idx, sleep=0.1, exists=None):
     """
     Usage
     -----
         >>> seed_idx = '123467' # comment seed idx
-        >>> comments, n_exceptions, flag = scrap_comments_of_a_user(seed_idx)
+        >>> comments, n_exceptions, flag, username, max_page = scrap_comments_of_a_user(seed_idx)
     """
     url = url_base.format(seed_idx)
-    soup, max_page = get_comment_soup(url)
+    soup, max_page, username = get_comment_soup(url)
 
     comments = []
     n_exceptions = 0
+
+    if (exists is not None) and (max_page > 5) and (exists.get(username, 0) >= max_page):
+        print(f'skip exists user {username}, max_page = {max_page}')
+        return comments, n_exceptions, True, username, max_page
 
     comments_, n_exceptions_ = parse_comments(soup)
     comments += comments_
@@ -40,8 +44,8 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1):
                 n_exceptions += n_exceptions_
                 print(f'\rscraping with seed = {seed_idx}, page = {page}/{max_page}', end='')
             except:
-                return comments, n_exceptions, False
-    return comments, n_exceptions, True
+                return comments, n_exceptions, False, username, max_page
+    return comments, n_exceptions, True, username, max_page
 
 normalize_pattern = re.compile('[\r\n\t]')
 doublespace_pattern = re.compile('[\s]+')
@@ -64,7 +68,11 @@ def get_comment_soup(url):
     b = r.text.index('<!-- list -->')
     e = r.text.index('<!-- //list -->') + 15
     soup = BeautifulSoup(r.text[b:e], 'lxml')
-    return soup, max_page
+
+    b = r.text.index('<h5 class="sub_tlt underline">') + 30
+    e = r.text.index('<', b)
+    username = r[b:e].strip()
+    return soup, max_page, username
 
 def get_max_page(r):
     e = r.text.index("</strong>개의 평점이 있습니다")
