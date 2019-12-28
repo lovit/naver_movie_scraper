@@ -19,7 +19,6 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1, exists=None):
     url = url_base.format(seed_idx)
     print('check username ... ', end='')
     soup, max_page, username = get_comment_soup(url)
-    print('done')
 
     comments = []
     n_exceptions = 0
@@ -27,6 +26,7 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1, exists=None):
     if (exists is not None) and (max_page > 5) and (exists.get(username, 0) >= max_page):
         print(f'skip exists user {username}, max_page = {max_page}, seed = {seed_idx}')
         return comments, n_exceptions, True, username, max_page
+    print('done', end='')
 
     comments_, n_exceptions_ = parse_comments(soup)
     comments += comments_
@@ -40,7 +40,7 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1, exists=None):
             time.sleep(sleep)
             try:
                 url_ = f'{url}&page={page}'
-                soup, max_page = get_comment_soup(url_)
+                soup, max_page, _ = get_comment_soup(url_)
                 comments_, n_exceptions_ = parse_comments(soup)
                 comments += comments_
                 n_exceptions += n_exceptions_
