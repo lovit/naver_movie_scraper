@@ -64,7 +64,8 @@ def main():
     n_exceptions = 0
     n_rounds = 0
 
-    exists = {}
+    # hard-coding
+    exists = {"bbq2****": 1000}
 
     while indices and diff > 0:
         n_rounds += 1
