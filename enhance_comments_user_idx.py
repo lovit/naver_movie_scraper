@@ -83,12 +83,15 @@ def main():
 
         # integer
         removals = {c['idx'] for c in comments}
+        print(removals)
         # integer
         indices = [idx for idx in indices if not (idx in removals)]
 
         # save remain indices
-        if (n_rounds % index_update_interval == 0) or (not flag):
+        if (n_rounds % index_update_interval == 0):
             save_index_list(indices, index_list)
+            print('saved seed indices')
+            time.sleep(1.0)
 
         diff = n_remains - len(indices)
         n_remains = len(indices)
