@@ -33,6 +33,7 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1, exists=None):
     # available only to 1000 page
     max_page = min(max_page, 999)
 
+    flag = True
     if max_page > 1:
         for page in range(2, max_page+1):
             time.sleep(sleep)
@@ -44,8 +45,9 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1, exists=None):
                 n_exceptions += n_exceptions_
                 print(f'\rscraping with seed = {seed_idx}, page = {page}/{max_page}', end='')
             except:
-                return comments, n_exceptions, False, username, max_page
-    return comments, n_exceptions, True, username, max_page
+                flag = False
+                continue
+    return comments, n_exceptions, flag, username, max_page
 
 normalize_pattern = re.compile('[\r\n\t]')
 doublespace_pattern = re.compile('[\s]+')
