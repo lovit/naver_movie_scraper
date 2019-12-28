@@ -75,7 +75,7 @@ def main():
         n_exceptions += n_exceptions_
 
         # update scraped user
-        if max_page > 3:
+        if max_page > 10:
             exists[username] = max_page
 
         dirname = f'{data_dir}/{seed_idx[:-4]}'
