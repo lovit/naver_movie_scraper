@@ -17,7 +17,9 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1, exists=None):
         >>> comments, n_exceptions, flag, username, max_page = scrap_comments_of_a_user(seed_idx)
     """
     url = url_base.format(seed_idx)
+    print('check username ... ', end='')
     soup, max_page, username = get_comment_soup(url)
+    print('done')
 
     comments = []
     n_exceptions = 0
