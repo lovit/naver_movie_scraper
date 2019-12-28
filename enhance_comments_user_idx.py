@@ -69,7 +69,7 @@ def main():
     while indices and diff > 0:
         n_rounds += 1
         seed_idx = str(indices.pop())
-        print(f'seed = {seed_idx}')
+        print(f'seed = {seed_idx} ', end='')
 
         comments, n_exceptions_, flag, username, max_page = scrap_comments_of_a_user(seed_idx, sleep, exists)
         n_exceptions += n_exceptions_
