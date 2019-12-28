@@ -33,7 +33,7 @@ def main():
     parser.add_argument('--enhanced_comment_directory', type=str, default='./user_comments/', help='Output directory')
     parser.add_argument('--index_list', type=str, default='./comment_indices', help='Remained comment indices')
     parser.add_argument('--sleep', type=float, default=0.1, help='Sleep time')
-    parser.add_argument('--index_update_interval', type=int, default=100, help='Save index list per round')
+    parser.add_argument('--index_update_interval', type=int, default=1000, help='Save index list per round')
     parser.add_argument('--debug', dest='debug', action='store_true', help='Find indices from 10 movies')
     parser.add_argument('--noscrap', dest='noscrap', action='store_true', help='No scraip, only make index list')
     parser.add_argument('--force_make', dest='force_make', action='store_true', help='Remake index list if exist the index list file')
@@ -69,6 +69,8 @@ def main():
     while indices and diff > 0:
         n_rounds += 1
         seed_idx = str(indices.pop())
+        print(f'seed = {seed_idx}')
+
         comments, n_exceptions_, flag, username, max_page = scrap_comments_of_a_user(seed_idx, sleep, exists)
         n_exceptions += n_exceptions_
 
@@ -83,14 +85,13 @@ def main():
 
         # integer
         removals = {c['idx'] for c in comments}
-        print(removals)
         # integer
         indices = [idx for idx in indices if not (idx in removals)]
 
         # save remain indices
         if (n_rounds % index_update_interval == 0):
             save_index_list(indices, index_list)
-            print('saved seed indices')
+            print('\rsaved seed indices')
             time.sleep(1.0)
 
         diff = n_remains - len(indices)
