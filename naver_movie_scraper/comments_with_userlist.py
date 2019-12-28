@@ -23,7 +23,7 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1, exists=None):
     n_exceptions = 0
 
     if (exists is not None) and (max_page > 5) and (exists.get(username, 0) >= max_page):
-        print(f'skip exists user {username}, max_page = {max_page}')
+        print(f'skip exists user {username}, max_page = {max_page}, seed = {seed_idx}')
         return comments, n_exceptions, True, username, max_page
 
     comments_, n_exceptions_ = parse_comments(soup)
