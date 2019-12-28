@@ -71,7 +71,7 @@ def get_comment_soup(url):
 
     b = r.text.index('<h5 class="sub_tlt underline">') + 30
     e = r.text.index('<', b)
-    username = r[b:e].strip()
+    username = r.text[b:e].strip()
     return soup, max_page, username
 
 def get_max_page(r):
