@@ -73,7 +73,12 @@ def main():
         seed_idx = str(indices.pop())
         print(f'seed = {seed_idx} ')
 
-        comments, n_exceptions_, flag, username, max_page = scrap_comments_of_a_user(seed_idx, sleep, exists)
+        try:
+            comments, n_exceptions_, flag, username, max_page = scrap_comments_of_a_user(seed_idx, sleep, exists)
+        except Exception as e:
+            print(f'\nUnexpected errors. skip the seed {seed_idx}\n')
+            n_exceptions += 1
+
         n_exceptions += n_exceptions_
 
         # update scraped user
