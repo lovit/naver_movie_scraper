@@ -65,7 +65,8 @@ def main():
     n_rounds = 0
 
     # hard-coding
-    exists = {"bbq2****": 1000}
+    exists = set()
+    exists.add(("bbq2****", 1107))
 
     while indices and diff > 0:
         n_rounds += 1
@@ -76,8 +77,8 @@ def main():
         n_exceptions += n_exceptions_
 
         # update scraped user
-        if max_page > 10:
-            exists[username] = max_page
+        if (max_page > 10) and (flag):
+            exists.add((username, max_page))
 
         dirname = f'{data_dir}/{seed_idx[:-4]}'
         check_dir(dirname)

@@ -23,9 +23,9 @@ def scrap_comments_of_a_user(seed_idx, sleep=0.1, exists=None):
     comments = []
     n_exceptions = 0
 
-    if (exists is not None) and (max_page > 5) and (exists.get(username, 0) >= max_page):
+    if (exists is not None) and (max_page > 5) and ((username, max_page) in exists):
         print(f'skip exists user {username}, max_page = {max_page}, seed = {seed_idx}')
-        return comments, n_exceptions, True, username, max_page
+        return comments, n_exceptions, False, username, max_page
     print('done', end='')
 
     comments_, n_exceptions_ = parse_comments(soup)
@@ -71,10 +71,13 @@ def get_comment_soup(url):
     e = r.text.index('<!-- //list -->') + 15
     soup = BeautifulSoup(r.text[b:e], 'lxml')
 
-    b = r.text.index('<h5 class="sub_tlt underline">') + 30
-    e = r.text.index('<', b)
-    e = min(e, b+30)
-    username = r.text[b:e].strip()
+    try:
+        b = r.text.index('<h5 class="sub_tlt underline">') + 30
+        e = r.text.index('<', b)
+        e = min(e, b+30)
+        username = r.text[b:e].strip()
+    except:
+        username = 'unknown'
     return soup, max_page, username
 
 def get_max_page(r):
