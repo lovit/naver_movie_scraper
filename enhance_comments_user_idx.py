@@ -16,7 +16,7 @@ def make_indices_list(directory, debug):
 
 def save_index_list(indices, path):
     dirname = os.path.dirname(path)
-    if not os.path.exists(dirname):
+    if (dirname != '') and (not os.path.exists(dirname)):
         os.makedirs(dirname)
     with open(path, 'w', encoding='utf-8') as f:
         for idx in sorted(indices):
