@@ -10,7 +10,7 @@ normalize_pattern = re.compile('[\r\n\t]')
 doublespcae_pattern = re.compile('[\s]+')
 
 
-def get_soup(url, headers=None, allow_redirects=False):
+def get_soup(url, headers=None, allow_redirects=True):
     """
     Argument
     --------
