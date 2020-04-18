@@ -13,6 +13,7 @@ tmp/
 comment_indices
 user_comments/
 data/
+log
 
 # Jupyter notebook
 .ipynb_checkpoints/
