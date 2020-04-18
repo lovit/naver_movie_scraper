@@ -254,7 +254,7 @@ list of dict 형식의 값을 return 합니다.
 | fast_update | store_true | False | If use, it stops when finding existing comments |
 
 ```
-python script.py --directory ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --sleep 0.1 --casting --comments --bestscripts --debug
+python scrap.py --directory ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --sleep 0.1 --casting --comments --bestscripts --debug
 ```
 
 위 코드를 실행시키면 현재 폴더 아래 `output` 가 생성되며, 각각의 하위 폴더에 해당 정보들이 수집됩니다.
