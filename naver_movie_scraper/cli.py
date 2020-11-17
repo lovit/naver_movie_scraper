@@ -3,13 +3,13 @@ import json
 import os
 import time
 
-from naver_movie_scraper import scrap_basic
-from naver_movie_scraper import scrap_casting
-from naver_movie_scraper import scrap_bestscripts
-from naver_movie_scraper import scrap_comments
-from naver_movie_scraper import save_list_of_dict
-from naver_movie_scraper import save_json
-from naver_movie_scraper import load_list_of_dict
+from .basic import scrap_basic
+from .detail import scrap_casting
+from .script import scrap_bestscripts
+from .comments import scrap_comments
+from .utils import save_list_of_dict
+from .utils import save_json
+from .utils import load_list_of_dict
 
 
 def scrap(idx, directory, casting=True, bestscripts=True, comments=True, limit=3, sleep=0.05, fast_update=False):
