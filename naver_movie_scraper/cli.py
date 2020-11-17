@@ -106,7 +106,7 @@ def main():
 
     with open('./log', 'w', encoding='utf-8') as f:
         if not exceptions:
-            f.write('Information of all movies were scraped successfully.\n')
+            f.write('All scraping tasks were terminated successfully.\n')
         else:
             f.write('Exist exceptions\n\n')
             for idx, e in exceptions:
