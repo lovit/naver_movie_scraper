@@ -66,12 +66,13 @@ def scrap(idx, directory, casting=True, bestscripts=True, comments=True, limit=3
     print('')
     time.sleep(sleep)
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--directory', type=str, default='./output/', help='Output directory')
     parser.add_argument('--begin_idx', type=int, default=134963, help='Index of first movie')
     parser.add_argument('--end_idx', type=int, default=134963, help='Index of last movie')
-    parser.add_argument('--specific_idx', type=str, default='', help='Index of specific movies')
+    parser.add_argument('--specific_idx', type=str, nargs='+', default='', help='Index of specific movies')
     parser.add_argument('--limit', type=int, default=-1, help='Page limitation for comments & best scripts')
     parser.add_argument('--sleep', type=float, default=0.1, help='Sleep time per each page in comments & best scripts')
     parser.add_argument('--casting', dest='casting', action='store_true')
@@ -103,7 +104,7 @@ def main():
 
     idxs = range(begin_idx, end_idx + 1)
     if specific_idx:
-        idxs = [int(idx) for idx in specific_idx.split('_')]
+        idxs = [int(idx) for idx in specific_idx]
 
     exceptions = []
     for idx in idxs:
