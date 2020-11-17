@@ -1,6 +1,7 @@
 import math
 import re
 import time
+from tqdm import trange
 from .utils import get_soup
 
 
@@ -14,17 +15,13 @@ def scrap_comments(idx, limit=-1, sleep=0.05, last_time=None):
         return []
 
     comments = []
-    for p in range(1, max_page + 1):
+    for p in trange(1, max_page + 1, desc=f'Scrap comments {idx}'):
         url = comments_url_form.format(idx, p)
         comments_p, stop = parse_a_page(get_soup(url), last_time)
-        if p % 20 == 0:
-            print(f'\r  movie {idx}, {p} / {max_page} ...', end='')
         comments += comments_p
         if stop:
             print(f'\r  movie {idx}. stop scrap comments. found existing comments {p} / {max_page}')
             break
-    if not stop:
-        print(f'\r  movie {idx}, {p} / {max_page} done')
     return comments[::-1]
 
 def parse_a_page(soup, last_time=None):
