@@ -89,14 +89,14 @@ def main():
 
     if args.comments:
         os.makedirs(f'{directory}/comments/', exist_ok=True)
-        for idx in tqdm(idxs, desc='Scrap comments', total=n):
+        for i_movie, idx in enumerate(tqdm(idxs, desc='Scrap comments', total=n)):
             path = f'{directory}/comments/{idx}'
             last_time = None
             comments_ = []
             if fast_update and os.path.exists(path):
                 comments_ = load_list_of_dict(path)
                 last_time = comments_[0]['written_at']
-            comments_new = scrap_comments(idx, limit, sleep, last_time)
+            comments_new = scrap_comments(idx, limit, sleep, last_time, i_movie, n)
             if comments_new:
                 comments_ += comments_new
                 comments_ = {json.dumps(obj, ensure_ascii=False) for obj in comments_}

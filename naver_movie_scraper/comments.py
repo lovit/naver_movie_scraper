@@ -7,15 +7,20 @@ from .utils import get_soup
 
 comments_url_form = 'https://movie.naver.com/movie/bi/mi/pointWriteFormList.nhn?code={}&order=newest&page={}&onlySpoilerPointYn=N' # idx, type, page
 
-def scrap_comments(idx, limit=-1, sleep=0.05, last_time=None):
+def scrap_comments(idx, limit=-1, sleep=0.05, last_time=None, i_movie=-1, n_total_movies=-1):
     max_page = num_of_comment_pages(idx)
     if limit > 0:
         max_page = min(limit, max_page)
     if max_page <= 0:
         return []
 
+    if n_total_movies < 0 or i_movie < 0:
+        desc = f'Scrap comments {idx}'
+    else:
+        desc = f'Scrap comments {idx} ({i_movie}/{n_total_movies})'
+
     comments = []
-    for p in trange(1, max_page + 1, desc=f'Scrap comments {idx}'):
+    for p in trange(1, max_page + 1, desc=desc):
         url = comments_url_form.format(idx, p)
         comments_p, stop = parse_a_page(get_soup(url), last_time)
         comments += comments_p
