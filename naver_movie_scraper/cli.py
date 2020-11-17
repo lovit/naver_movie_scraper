@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 import time
+from tqdm import tqdm
 
 from .basic import scrap_basic
 from .detail import scrap_casting
@@ -12,64 +13,9 @@ from .utils import save_json
 from .utils import load_list_of_dict
 
 
-def scrap(idx, directory, casting=True, bestscripts=True, comments=True, limit=3, sleep=0.05, fast_update=False):
-    # basic
-    path = f'{directory}/meta/{idx}.json'
-    if (fast_update) and (os.path.exists(path)):
-        print(f'already scraped {idx} basic')
-    else:
-        save_json(scrap_basic(idx), path)
-        print(f'scraped {idx} basic')
-
-    # castings
-    if casting:
-        path = f'{directory}/actors/{idx}'
-        if (fast_update) and (os.path.exists(path)):
-            print(f'already scraped {idx} casting')
-        else:
-            castings = scrap_casting(idx)
-            for key in ['actors', 'directors', 'staffs']:
-                path = f'{directory}/{key}/{idx}'
-                if castings.get(key, []):
-                    save_list_of_dict(castings[key], path)
-            print(f'scraped {idx} casting')
-
-    # best scripts
-    if bestscripts:
-        path = f'{directory}/bestscripts/{idx}'
-        if (fast_update) and (os.path.exists(path)):
-            print(f'already scraped {idx} bests cripts')
-        else:
-            scripts = scrap_bestscripts(idx, limit, sleep)
-            if scripts:
-                save_list_of_dict(scripts, path)
-            print(f'scraped {idx} best scripts')
-
-    # comments
-    if comments:
-        path = f'{directory}/comments/{idx}'
-        last_time = None
-        comments_ = []
-        if fast_update:
-            if os.path.exists(path):
-                comments_ = load_list_of_dict(path)
-                last_time = comments_[0]['written_at']
-        comments_new = scrap_comments(idx, limit, sleep, last_time)
-        if comments_new:
-            comments_ += comments_new
-            comments_ = {json.dumps(obj, ensure_ascii=False) for obj in comments_}
-            comments_ = [json.loads(obj) for obj in comments_]
-            comments_ = sorted(comments_, key=lambda x:x['written_at'], reverse=True)
-            save_list_of_dict(comments_, path)
-        print(f'scraped {len(comments_)} comments of movie {idx}')
-
-    print('')
-    time.sleep(sleep)
-
-
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--directory', type=str, default='./output/', help='Output directory')
+    parser.add_argument('--output', type=str, default='./output/', help='Output directory')
     parser.add_argument('--begin_idx', type=int, default=134963, help='Index of first movie')
     parser.add_argument('--end_idx', type=int, default=134963, help='Index of last movie')
     parser.add_argument('--specific_idx', type=str, nargs='+', default='', help='Index of specific movies')
@@ -82,40 +28,81 @@ def main():
     parser.add_argument('--fast_update', dest='fast_update', action='store_true')
 
     args = parser.parse_args()
-    directory = args.directory
+    directory = args.output
     begin_idx = args.begin_idx
     end_idx = args.end_idx
     specific_idx = args.specific_idx
     limit = args.limit
     sleep = args.sleep
-    casting = args.casting
-    bestscripts = args.bestscripts
-    comments = args.comments
     debug = args.debug
     fast_update = args.fast_update
 
     if debug:
         limit = 3
 
-    for subdir in ['meta', 'actors', 'directors', 'staffs', 'bestscripts', 'comments']:
-        path = '{}/{}/'.format(directory, subdir)
-        if not os.path.exists(path) or os.path.isfile(path):
-            os.makedirs(path)
-
     idxs = range(begin_idx, end_idx + 1)
     if specific_idx:
         idxs = [int(idx) for idx in specific_idx]
 
+    n = len(idxs)
     exceptions = []
-    for idx in idxs:
+
+    os.makedirs(f'{directory}/meta/', exist_ok=True)
+    for idx in tqdm(idxs, desc='Scrap basic meta', total=n):
+        path = f'{directory}/meta/{idx}.json'
+        if (fast_update) and (os.path.exists(path)):
+            continue
         try:
-            scrap(idx, directory, casting, bestscripts, comments, limit, sleep, fast_update)
+            save_json(scrap_basic(idx), path)
         except Exception as e:
-            print('movie id = {}'.format(idx))
-            print(e)
-            exceptions.append((idx, str(e)))
-        if exceptions:
-            print('Exist {} exceptions'.format(len(exceptions)))
+            exceptions.append(f'Scrap basic {idx}: {str(e)}')
+
+    if args.casting:
+        os.makedirs(f'{directory}/actors/', exist_ok=True)
+        os.makedirs(f'{directory}/directors/', exist_ok=True)
+        os.makedirs(f'{directory}/staffs/', exist_ok=True)
+        for idx in tqdm(idxs, desc='Scrap casting', total=n):
+            path = f'{directory}/actors/{idx}'
+            if (fast_update) and (os.path.exists(path)):
+                continue
+            try:
+                castings = scrap_casting(idx)
+                for key in ['actors', 'directors', 'staffs']:
+                    path = f'{directory}/{key}/{idx}'
+                    if castings.get(key, []):
+                        save_list_of_dict(castings[key], path)
+            except Exception as e:
+                exceptions.append(f'Scrap casting {idx}: {str(e)}')
+
+    if args.bestscripts:
+        os.makedirs(f'{directory}/bestscripts/', exist_ok=True)
+        for idx in tqdm(idxs, desc='Scrap best-scripts', total=n):
+            path = f'{directory}/bestscripts/{idx}'
+            if (fast_update) and (os.path.exists(path)):
+                continue
+            try:
+                scripts = scrap_bestscripts(idx, limit, sleep)
+                if scripts:
+                    save_list_of_dict(scripts, path)
+            except Exception as e:
+                exceptions.append(f'Scrap best-scripts {idx}: {str(e)}')
+
+    if args.comments:
+        os.makedirs(f'{directory}/comments/', exist_ok=True)
+        for idx in tqdm(idxs, desc='Scrap comments', total=n):
+            path = f'{directory}/comments/{idx}'
+            last_time = None
+            comments_ = []
+            if fast_update and os.path.exists(path):
+                comments_ = load_list_of_dict(path)
+                last_time = comments_[0]['written_at']
+            comments_new = scrap_comments(idx, limit, sleep, last_time)
+            if comments_new:
+                comments_ += comments_new
+                comments_ = {json.dumps(obj, ensure_ascii=False) for obj in comments_}
+                comments_ = [json.loads(obj) for obj in comments_]
+                comments_ = sorted(comments_, key=lambda x:x['written_at'], reverse=True)
+                save_list_of_dict(comments_, path)
 
     with open('./log', 'w', encoding='utf-8') as f:
         if not exceptions:
