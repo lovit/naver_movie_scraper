@@ -237,11 +237,11 @@ list of dict 형식의 값을 return 합니다.
 
 ## Script 를 이용한 데이터 수집
 
-`script.py` 파일을 이용하면 위의 함수들을 모두 이용할 수 있습니다. 사용 가능한 arguments 는 아래와 같습니다.
+CLI 를 이용하여 위의 함수들을 모두 이용할 수 있습니다. 사용 가능한 arguments 는 아래와 같습니다.
 
 | Argument | Type | Default | Description |
 | --- | --- | --- | --- |
-| directory | str | './output/' | Output directory |
+| output | str | './output/' | Output directory |
 | begin_idx | int | 134963 | Index of first movie |
 | end_idx | int | 134963 | Index of last movie |
 | specific_idx | str | '' | Index of specific movies<br>Under-bar separated idx<br>eg. 134963_10100 |
@@ -254,8 +254,13 @@ list of dict 형식의 값을 return 합니다.
 | fast_update | store_true | False | If use, it stops when finding existing comments |
 
 ```
-python scrap.py --directory ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --sleep 0.1 --casting --comments --bestscripts --debug
+naver_movie_scraper --output ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --sleep 0.1 --casting --comments --bestscripts --debug
 ```
+
+```
+naver_movie_scraper --output ./naver_movie/ --specific_idx 38899 134963 --comments --debug
+```
+
 
 위 코드를 실행시키면 현재 폴더 아래 `output` 가 생성되며, 각각의 하위 폴더에 해당 정보들이 수집됩니다.
 
