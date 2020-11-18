@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--specific_idx', type=str, nargs='+', default='', help='Index of specific movies')
     parser.add_argument('--limit', type=int, default=-1, help='Page limitation for comments & best scripts')
     parser.add_argument('--sleep', type=float, default=0.1, help='Sleep time per each page in comments & best scripts')
+    parser.add_argument('--basic', dest='basic', action='store_true')
     parser.add_argument('--casting', dest='casting', action='store_true')
     parser.add_argument('--bestscripts', dest='bestscripts', action='store_true')
     parser.add_argument('--comments', dest='comments', action='store_true')
@@ -47,15 +48,19 @@ def main():
     n = len(idxs)
     exceptions = []
 
-    os.makedirs(f'{directory}/meta/', exist_ok=True)
-    for idx in tqdm(idxs, desc='Scrap basic meta', total=n):
-        path = f'{directory}/meta/{idx}.json'
-        if (fast_update) and (os.path.exists(path)):
-            continue
-        try:
-            save_json(scrap_basic(idx), path)
-        except Exception as e:
-            exceptions.append(f'Scrap basic {idx}: {str(e)}')
+    if (not args.basic) and (not args.casting) and (not args.bestscripts) and (not agrs.comments):
+        raise ValueError("Check one more options from[--basic, --casting, --best_scripts, --comments")
+
+    if args.basic:
+        os.makedirs(f'{directory}/meta/', exist_ok=True)
+        for idx in tqdm(idxs, desc='Scrap basic meta', total=n):
+            path = f'{directory}/meta/{idx}.json'
+            if (fast_update) and (os.path.exists(path)):
+                continue
+            try:
+                save_json(scrap_basic(idx), path)
+            except Exception as e:
+                exceptions.append(f'Scrap basic {idx}: {str(e)}')
 
     if args.casting:
         os.makedirs(f'{directory}/actors/', exist_ok=True)

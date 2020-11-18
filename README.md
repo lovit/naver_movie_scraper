@@ -247,6 +247,7 @@ CLI 를 이용하여 위의 함수들을 모두 이용할 수 있습니다. 사�
 | specific_idx | str | '' | Index of specific movies<br>Under-bar separated idx<br>eg. 134963_10100 |
 | limit | int | -1 | Page limitation for comments & best scripts |
 | sleep | float | 0.1 | Sleep time per each page in comments & best scripts |
+| basic | store_true | False | If use, scrap basic meta |
 | casting | store_true | False | If use, scrap castings |
 | comments | store_true | False | If use, scrap comments |
 | bestscripts | store_true | False | If use, scrap best scripts |
@@ -254,7 +255,7 @@ CLI 를 이용하여 위의 함수들을 모두 이용할 수 있습니다. 사�
 | fast_update | store_true | False | If use, it stops when finding existing comments |
 
 ```
-naver_movie_scraper --output ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --sleep 0.1 --casting --comments --bestscripts --debug
+naver_movie_scraper --output ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --sleep 0.1 --basic --casting --comments --bestscripts --debug
 ```
 
 ```
