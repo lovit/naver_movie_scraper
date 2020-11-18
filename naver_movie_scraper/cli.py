@@ -48,7 +48,7 @@ def main():
     n = len(idxs)
     exceptions = []
 
-    if (not args.basic) and (not args.casting) and (not args.bestscripts) and (not agrs.comments):
+    if (not args.basic) and (not args.casting) and (not args.bestscripts) and (not args.comments):
         raise ValueError("Check one more options from[--basic, --casting, --best_scripts, --comments")
 
     if args.basic:
