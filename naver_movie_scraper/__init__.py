@@ -1,3 +1,6 @@
+from .about import __author__
+from .about import __name__
+from .about import __version__
 from .basic import scrap_basic
 from .comments import scrap_comments
 from .comments_with_userlist import scrap_comments_of_a_user
