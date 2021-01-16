@@ -1,5 +1,55 @@
 # 네이버 영화 정보 및 사용자 작성 영화평/평점 데이터 수집기
 
+## Install
+
+```
+git clone https://github.com/lovit/naver_movie_scraper
+cd naver_movie_scraper
+python setup.py install
+```
+
+## Script 를 이용한 데이터 수집
+
+CLI 를 이용하여 위의 함수들을 모두 이용할 수 있습니다. 사용 가능한 arguments 는 아래와 같습니다.
+
+| Argument | Type | Default | Description |
+| --- | --- | --- | --- |
+| output | str | './output/' | Output directory |
+| begin_idx | int | 134963 | Index of first movie |
+| end_idx | int | 134963 | Index of last movie |
+| specific_idx | str | '' | Index of specific movies white space separated idx<br>eg. 134963 10100 |
+| limit | int | -1 | Page limitation for comments & best scripts |
+| sleep | float | 0.1 | Sleep time per each page in comments & best scripts |
+| basic | store_true | False | If use, scrap basic meta |
+| casting | store_true | False | If use, scrap castings |
+| comments | store_true | False | If use, scrap comments |
+| bestscripts | store_true | False | If use, scrap best scripts |
+| debug | store_true | False | If use, it sets limit as '3' |
+| fast_update | store_true | False | If use, it stops when finding existing comments |
+
+```
+naver_movie_scraper --output ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --sleep 0.1 --basic --casting --comments --bestscripts --debug
+```
+
+```
+naver_movie_scraper --output ./naver_movie/ --specific_idx 38899 134963 --comments --debug
+```
+
+
+위 코드를 실행시키면 현재 폴더 아래 `output` 가 생성되며, 각각의 하위 폴더에 해당 정보들이 수집됩니다.
+
+```
+|-- output
+    |-- actors
+    |-- bestscripts
+    |-- comments
+    |-- directors
+    |-- meta
+    |-- staffs
+```
+
+## Components of scraper
+
 `naver_movie_scraper` 폴더는 다음의 파일들로 구성되어 있습니다.
 
 | File | Note | Function |
@@ -233,44 +283,4 @@ list of dict 형식의 값을 return 합니다.
   'text': '그냥 흘러가는 대로 가보자.'},
   ...
  ]
-```
-
-## Script 를 이용한 데이터 수집
-
-CLI 를 이용하여 위의 함수들을 모두 이용할 수 있습니다. 사용 가능한 arguments 는 아래와 같습니다.
-
-| Argument | Type | Default | Description |
-| --- | --- | --- | --- |
-| output | str | './output/' | Output directory |
-| begin_idx | int | 134963 | Index of first movie |
-| end_idx | int | 134963 | Index of last movie |
-| specific_idx | str | '' | Index of specific movies<br>Under-bar separated idx<br>eg. 134963_10100 |
-| limit | int | -1 | Page limitation for comments & best scripts |
-| sleep | float | 0.1 | Sleep time per each page in comments & best scripts |
-| basic | store_true | False | If use, scrap basic meta |
-| casting | store_true | False | If use, scrap castings |
-| comments | store_true | False | If use, scrap comments |
-| bestscripts | store_true | False | If use, scrap best scripts |
-| debug | store_true | False | If use, it sets limit as '3' |
-| fast_update | store_true | False | If use, it stops when finding existing comments |
-
-```
-naver_movie_scraper --output ./output/ --begin_idx 134963 --end_idx 134963 --specific_idx '' --sleep 0.1 --basic --casting --comments --bestscripts --debug
-```
-
-```
-naver_movie_scraper --output ./naver_movie/ --specific_idx 38899 134963 --comments --debug
-```
-
-
-위 코드를 실행시키면 현재 폴더 아래 `output` 가 생성되며, 각각의 하위 폴더에 해당 정보들이 수집됩니다.
-
-```
-|-- output
-    |-- actors
-    |-- bestscripts
-    |-- comments
-    |-- directors
-    |-- meta
-    |-- staffs
 ```
